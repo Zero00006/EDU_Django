@@ -15,7 +15,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return f"{self.name} ({self.get_type_display()})"
+        return f"{self.name})"
 
 class Transaction(models.Model):
     TYPE_CHOICES = [('income', 'Доход'),
@@ -35,7 +35,7 @@ class Transaction(models.Model):
         verbose_name_plural = 'Транзакции'
 
     def __str__(self):
-        return f"id:{self.id}, ({self.get_type_display(): {self.amount} - {self.description}})"
+        return f"id:{self.id}, ({self.get_type_display()} {self.amount} {self.description})"
 
 class Budget(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='budgets')

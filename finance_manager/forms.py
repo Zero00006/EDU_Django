@@ -1,12 +1,14 @@
 from django import forms
 
-from finance_manager.models import Category, Transaction
+from finance_manager.models import Category, Transaction, Budget
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ('name', 'type')
+        fields = ('name', 'user_id')
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
@@ -22,3 +24,19 @@ class TransactionForm(forms.ModelForm):
                 self.fields['category'].queryset = Category.objects.filter(user=user)
 
             self.fields['category'].required = False
+
+class BudgetForm(forms.ModelForm):
+    class Meta:
+        model = Budget
+        fields = ('user_id', 'category','amount', 'month')
+        widgets = {
+            'month': forms.Select(attrs={'class': 'datepicker'}),
+        }
+
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
