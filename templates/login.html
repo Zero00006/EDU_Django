@@ -15,6 +15,9 @@
                 <button type="submit" class = "btn_submit_login">Войти</button>
                 <p class="message">Нет аккаунта? <a href="{% url 'register' %}">Регистрация</a></p>
             </form>
+            <div class="log_error">
+                {{ form.errors }}
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -18,7 +18,7 @@
             <div class = "navbar">
                 <ul>
                 <li><a href="{% url 'index' %}">Главная</a></li>
-            {% if user.is_authenticated %}
+            {% if not user.is_authenticated %}
                 {% block navmain %}
                     <li><a href="{% url 'login' %}">Вход</a></li>
                     <li><a href="{% url 'register' %}">Регистрация</a></li>
@@ -27,6 +27,7 @@
                 {% block navlogin %}
                     <li><a href="">Финансы</a></li>
                     <li><a href="">Транзакции</a></li>
+                    <li><a href="{% url 'logout' %}">Выход</a></li>
                 {% endblock %}
             {% endif %}
                 </ul>

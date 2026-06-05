@@ -79,6 +79,9 @@ h1{
     color: #c867f1;
     text-decoration-color: #c867f1;
 }
+.log_error {
+    color: white;
+}
 .regmenu {
     margin-top: 13cap;
     margin-left: 65cap;
@@ -96,7 +99,7 @@ h1{
     color: white;
     text-align: center;
 }
-.regform form input{
+.regform input{
     margin: 1cap;
 }
 .regform button {
@@ -110,4 +113,7 @@ h1{
 .regform a {
     color: #c867f1;
     text-decoration-color: #c867f1;
+}
+.reg_error {
+    color: white;
 }
