@@ -20,6 +20,7 @@ h1{
     margin-top: 0;
     color: white;
     background-color: rgba(64, 64, 64, 0.95);
+    border-radius: 0.5cap;
 }
 .navbar ul{
     list-style-type: none ;
@@ -28,6 +29,7 @@ h1{
     margin: 0;
     overflow: hidden;
     text-align: center;
+    border-radius: 2cap;
 }
 .navbar a{
     font-size: 1.75cap;
@@ -35,6 +37,7 @@ h1{
     text-decoration: none;
     padding: 15px;
     display: flex;
+
 }
 .navbar a:hover{
     background-color: hsl(0, 0%, 10%);
@@ -43,22 +46,32 @@ h1{
     float: left;
 }
 .main p{
+    margin-top: 10cap;
+    margin-right: 40cap;
+    margin-left: 40cap;
     color: white;
     text-align: center;
     align-content: center;
+    background-color: rgba(64, 64, 64, 0.95);
+    padding-top: 4cap;
+    padding-bottom: 4cap;
+    border-radius: 2cap;
+    font-size: 1.85cap;
 }
 .logmenu {
-    margin-top: 13cap;
+    margin-top: 10cap;
     margin-left: 65cap;
     margin-right: 65cap;
     background-color: rgba(64, 64, 64, 0.95);
     display: block;
     justify-content: center;
+    border-radius: 2cap;
 }
 .logmenu h3{
     text-align: center;
     color: white;
     font-size: 4.5cap;
+    padding-bottom: 0.5cap;
 }
 .logform form{
     color: white;
@@ -71,6 +84,8 @@ h1{
     padding-right: 7px;
     border-radius: 0.4cap;
     margin-bottom: 0.5cap;
+    color: white;
+    background-color: rgba(40, 40, 40, 0.95);
 }
 .logform p{
     font-size: 1.5cap;
@@ -83,17 +98,19 @@ h1{
     color: white;
 }
 .regmenu {
-    margin-top: 13cap;
+    margin-top: 10cap;
     margin-left: 65cap;
     margin-right: 65cap;
     background-color: rgba(64, 64, 64, 0.95);
     display: block;
     justify-content: center;
+    border-radius: 2cap;
 }
 .regmenu h3{
     text-align: center;
     color: white;
     font-size: 4.5cap;
+    padding-bottom: 0.5cap;
 }
 .regform form{
     color: white;
@@ -106,6 +123,8 @@ h1{
     padding-right: 7px;
     border-radius: 0.4cap;
     margin-bottom: 0.5cap;
+    color: white;
+    background-color: rgba(40, 40, 40, 0.95);
 }
 .regform p{
     font-size: 1.5cap;
