@@ -1,0 +1,20 @@
+{% extends 'Base.html' %}
+{% block title %} Login {% endblock %}
+{% block main %}
+    <div class = "logmenu">
+        <h3>Вход в систему</h3>
+        <div class = logform>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    <input type="text" name="username" placeholder="Логин..." class="form-control">
+                </div>
+                <div class="input-group mb-2">
+                    <input type="password" name="password" placeholder="Пароль..." class="form-control" >
+                </div>
+                <button type="submit" class = "btn_submit_login">Войти</button>
+                <p class="message">Нет аккаунта? <a href="{% url 'register' %}">Регистрация</a></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

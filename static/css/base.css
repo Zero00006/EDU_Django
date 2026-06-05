@@ -2,7 +2,7 @@
 body {
     margin: 0;
     min-height: 100vh;
-    background: radial-gradient(rgba(102,126,234,1) 65%,rgba(118,75,162,1) 100%);
+    background: radial-gradient(rgba(0,0,0, 0.8) 0%,rgb(52, 72, 161) 75%,rgba(118,75,162,1) 100%);
     }
 .navbar{
     display:flex;
@@ -46,4 +46,68 @@ h1{
     color: white;
     text-align: center;
     align-content: center;
+}
+.logmenu {
+    margin-top: 13cap;
+    margin-left: 65cap;
+    margin-right: 65cap;
+    background-color: rgba(64, 64, 64, 0.95);
+    display: block;
+    justify-content: center;
+}
+.logmenu h3{
+    text-align: center;
+    color: white;
+    font-size: 4.5cap;
+}
+.logform form{
+    color: white;
+    text-align: center;
+}
+.logform form input{
+    margin: 1cap;
+}
+.logform button {
+    padding-right: 7px;
+    border-radius: 0.4cap;
+    margin-bottom: 0.5cap;
+}
+.logform p{
+    font-size: 1.5cap;
+}
+.logform a{
+    color: #c867f1;
+    text-decoration-color: #c867f1;
+}
+.regmenu {
+    margin-top: 13cap;
+    margin-left: 65cap;
+    margin-right: 65cap;
+    background-color: rgba(64, 64, 64, 0.95);
+    display: block;
+    justify-content: center;
+}
+.regmenu h3{
+    text-align: center;
+    color: white;
+    font-size: 4.5cap;
+}
+.regform form{
+    color: white;
+    text-align: center;
+}
+.regform form input{
+    margin: 1cap;
+}
+.regform button {
+    padding-right: 7px;
+    border-radius: 0.4cap;
+    margin-bottom: 0.5cap;
+}
+.regform p{
+    font-size: 1.5cap;
+}
+.regform a {
+    color: #c867f1;
+    text-decoration-color: #c867f1;
 }
