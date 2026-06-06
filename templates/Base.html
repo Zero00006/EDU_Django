@@ -25,7 +25,7 @@
                 {% endblock %}
             {% else %}
                 {% block navlogin %}
-                    <li><a href="">Финансы</a></li>
+                    <li><a href="{% url 'finances' %}">Финансы</a></li>
                     <li><a href="">Транзакции</a></li>
                     <li><a href="{% url 'logout' %}">Выход</a></li>
                 {% endblock %}

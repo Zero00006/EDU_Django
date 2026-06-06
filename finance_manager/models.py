@@ -1,4 +1,4 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -8,18 +8,17 @@ from django.utils import timezone
 class Category(models.Model):
     name = models.CharField('Название',
                             max_length=50)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,
-                                related_name='categories')
-    created_at = models.DateTimeField('Дата создания',
-                                      auto_now_add=True)
-
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, )
+    amount = models.DecimalField('Бюджет категории', max_digits=10,
+                                 decimal_places=2, default=0)
     class Meta:
-        unique_together = ['name', 'user_id']
+        unique_together = ('user', 'name')
+        ordering = ['-name']
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
-
     def __str__(self):
-        return f"{self.name})"
+        return f"id:{self.id}, user_id:{self.user}, name:{self.name}"
 
 
 class Transaction(models.Model):
@@ -28,48 +27,26 @@ class Transaction(models.Model):
                     ('expense', 'Расход')
     ]
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,
-                                related_name='transactions')
+    user = models.ForeignKey(User, on_delete=models.CASCADE,
+                             related_name='transactions')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
                                  null=True,
-                                 related_name='transactions')
-    amount = models.DecimalField('Сумма транзакции', max_digits=10,
-                                 decimal_places=2)
-    description = models.CharField('Описание транзакции', max_length=250,
+                                 related_name='transactions',
+                                 verbose_name= 'Категория')
+    amount = models.DecimalField('Сумма', max_digits=10,
+                                 decimal_places=2, default=0)
+    description = models.CharField('Комментарий', max_length=200,
                                    blank=True)
-    date = models.DateField('Дата транзакции',
+    date = models.DateField('Дата',
                             default=timezone.now)
     type = models.CharField('Тип', max_length=10,
                             choices=TYPE_CHOICES)
-    created_at = models.DateTimeField('Дата создания',
-                                      auto_now_add=True)
 
     class Meta:
-        ordering = ('-date', '-created_at',)
+        ordering = ('-id', '-amount')
         verbose_name = 'Транзакция'
         verbose_name_plural = 'Транзакции'
 
     def __str__(self):
-        return (f"id:{self.id}, "
-                f" ({self.get_type_display()} "
-                f"{self.amount} {self.description})")
-
-
-class Budget(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE,
-                                related_name='budgets')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL,
-                                 null=True, related_name='budgets')
-    amount = models.DecimalField('Бюджет', max_digits=10,
-                                 decimal_places=2)
-    month = models.IntegerField('Срок (месяцы)',
-                                validators=[MinValueValidator(1),
-                                            MaxValueValidator(12)])
-
-    class Meta:
-        unique_together = ['user_id', 'category', 'month']
-        verbose_name = 'Бюджет'
-        verbose_name_plural = 'Бюджеты'
-
-    def __str__(self):
-        return f"{self.category.name}: {self.amount} ({self.month} months)"
+        return (f"id:{self.id}, user_id:{self.user}, category:{self.category},"
+                f" amount:{self.amount}, description:{self.description}, date:{self.date}")
