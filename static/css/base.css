@@ -155,6 +155,15 @@ h1{
     padding-left: 2cap;
     border-radius: 2cap;
 }
+.budget_menu {
+    margin-top: 5cap;
+    display: block;
+    background-color: rgba(64, 64, 64, 0.95);
+    color: white;
+    padding-bottom: 1cap;
+    padding-left: 2cap;
+    border-radius: 2cap;
+}
 .transaction_menu {
     margin-top: 5cap;
     display: block;

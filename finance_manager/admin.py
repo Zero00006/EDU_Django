@@ -8,7 +8,7 @@ from finance_manager.models import Category, Transaction
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'amount', 'id')
+    list_display = ('name', 'user', 'id')
 
 
 @admin.register(Transaction)

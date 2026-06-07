@@ -1,12 +1,9 @@
 from django.contrib.auth import login, logout
-from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
-from .forms import CategoryForm, TransactionForm
-from django.contrib import messages
-from .models import Category
+from .forms import CategoryForm, TransactionForm, BudgetForm
+from .models import Budget
 
 
 def index(request):
@@ -46,11 +43,14 @@ def logout_view(request):
 def finances(request):
     form_cat = CategoryForm()
     form_tr = TransactionForm()
+    form_bg = BudgetForm()
     if request.method == 'POST':
         form_cat = CategoryForm(request.POST)
         form_tr = TransactionForm(request.POST)
+        form_bg = BudgetForm(request.POST)
         form_cat.instance.user = request.user
         form_tr.instance.user = request.user
+        form_bg.instance.user = request.user
         if form_cat.is_valid():
             form = form_cat.save(commit=False)
             form.save()
@@ -66,11 +66,15 @@ def finances(request):
                 request.POST._mutable = True
                 request.POST.update({'type': 'income'})
                 request.POST._mutable = False
-            cat = Category.objects.get(pk=request.POST.get('category'))
-            cat.amount += amount
-            cat.save()
+            bg = Budget.objects.get(pk=request.POST.get('category'))
+            bg.amount += amount
+            bg.save()
             form = form_tr.save(commit=False)
             form.user = request.user
             form.save()
             return redirect('finances')
-    return render(request, 'finances.html', {'form_cat': form_cat, 'form_tr': form_tr})
+        if form_bg.is_valid():
+            form = form_bg.save(commit=False)
+            form.save()
+            return redirect('finances')
+    return render(request, 'finances.html', {'form_cat': form_cat, 'form_tr': form_tr, 'form_bg': form_bg})
