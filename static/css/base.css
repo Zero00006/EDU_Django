@@ -136,3 +136,31 @@ h1{
 .reg_error {
     color: white;
 }
+.finances_menu {
+    margin-top: 2cap;
+    margin-left: 5cap;
+    margin-right: 120cap;
+    padding-left: 2cap;
+    justify-content: center;
+    border-radius: 2cap;
+    h3 {
+        color:white;
+    }
+}
+.category_menu {
+    display: block;
+    color: white;
+    background-color: rgba(64, 64, 64, 0.95);
+    padding-bottom: 1cap;
+    padding-left: 2cap;
+    border-radius: 2cap;
+}
+.transaction_menu {
+    margin-top: 5cap;
+    display: block;
+    background-color: rgba(64, 64, 64, 0.95);
+    color: white;
+    padding-bottom: 1cap;
+    padding-left: 2cap;
+    border-radius: 2cap;
+}

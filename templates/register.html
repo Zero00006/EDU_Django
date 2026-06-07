@@ -3,8 +3,8 @@
 {% block main %}
     <div class = "regmenu">
         <h3>Регистрация</h3>
-        <div class = regform>
-            <form class = "form-with-validation" action="" method="post">
+        <div class = "regform">
+            <form action="" method="post">
                 {% csrf_token %}
                 <div class="input-group mb-3">
                     <input type="text" name="username" placeholder="Логин..." class="form-control">

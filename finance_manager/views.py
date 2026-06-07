@@ -1,8 +1,11 @@
 from django.contrib.auth import login, logout
+from django import forms
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.exceptions import ValidationError
 from django.shortcuts import render, redirect
 from .forms import CategoryForm, TransactionForm
+from django.contrib import messages
 from .models import Category
 
 
@@ -26,7 +29,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('index')
+            return redirect('login')
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
@@ -46,9 +49,10 @@ def finances(request):
     if request.method == 'POST':
         form_cat = CategoryForm(request.POST)
         form_tr = TransactionForm(request.POST)
+        form_cat.instance.user = request.user
+        form_tr.instance.user = request.user
         if form_cat.is_valid():
             form = form_cat.save(commit=False)
-            form.user = request.user
             form.save()
             return redirect('finances')
         if form_tr.is_valid():

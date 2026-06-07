@@ -1,22 +1,26 @@
+from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import DecimalField
 from django.utils import timezone
 # Create your models here.
 
 
 class Category(models.Model):
-    name = models.CharField('Название',
+    name = models.CharField('Название категории',
                             max_length=50)
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, )
-    amount = models.DecimalField('Бюджет категории', max_digits=10,
-                                 decimal_places=2, default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     class Meta:
         unique_together = ('user', 'name')
         ordering = ['-name']
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+    def clean(self):
+        if Category.objects.filter(name=self.name, user=self.user).exists():
+            raise ValidationError("Категория с таким названием существует")
+
     def __str__(self):
         return f"id:{self.id}, user_id:{self.user}, name:{self.name}"
 
@@ -30,7 +34,6 @@ class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,
                              related_name='transactions')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL,
-                                 null=True,
                                  related_name='transactions',
                                  verbose_name= 'Категория')
     amount = models.DecimalField('Сумма', max_digits=10,
