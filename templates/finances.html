@@ -1,39 +1,66 @@
 {% extends 'Base.html' %}
 {% block title %} Финансы {% endblock %}
 {% block main %}
-    <div class = "finances_menu">
-        <div class = "category_menu">
-            <h3>Добавить категорию</h3>
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form_cat }}
-                <button type="submit" class = "btn_submit_category">Добавить</button>
-            </form>
-            <div class = "catalog_error">
-                {{ form_error }}
+    <div class = "full">
+        <div class = "finances_menu">
+            <div class = "category_menu">
+                <h3>Добавить категорию</h3>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form_cat }}
+                    <button type="submit" class = "btn_submit_category" name="submit" value="btn_cat">Добавить</button>
+                </form>
+                <div class = "catalog_error">
+                    {{ form_error }}
+                </div>
+            </div>
+            <div class = "budget_menu">
+                <h3>Добавить месячный бюджет</h3>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form_bg }}
+                    <button type="submit" class = "btn_submit_budget" name="submit" value="btn_bg">Добавить</button>
+                </form>
+                <div class = "budget_error">
+                    {{ form_error }}
+                </div>
+            </div>
+            <div class = "transaction_menu">
+                <h3>Добавить транзакцию</h3>
+                <form action="" method="post">
+                    {% csrf_token %}
+                    {{ form_tr }}
+                    <button type="submit" class = "btn_submit_transaction" name="submit" value="btn_tr">Добавить</button>
+                </form>
+                <div class = "transaction_error">
+                    {{ form_error }}
+                </div>
             </div>
         </div>
-        <div class = "budget_menu">
-            <h3>Добавить месячный бюджет</h3>
-            <form action="" method="post">
+        <div class = "report_menu">
+            <form class = "sort" method="post", action="">
                 {% csrf_token %}
-                {{ form_bg }}
-                <button type="submit" class = "btn_submit_budget">Добавить</button>
+                {{ form_sort }}
+                <button type="submit" class = "btn_submit_sort" name="submit" value="btn_sort">Обновить</button>
             </form>
-            <div class = "budget_error">
-                {{ form_error }}
-            </div>
-        </div>
-        <div class = "transaction_menu">
-            <h3>Добавить транзакцию</h3>
-            <form action="" method="post">
-                {% csrf_token %}
-                {{ form_tr }}
-                <button type="submit" class = "btn_submit_transaction">Добавить</button>
-            </form>
-            <div class = "transaction_error">
-                {{ form_error }}
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Бюджет</th>
+                        <th>Категория</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in objects %}
+                    <tr class = "{% cycle 'row1' 'row2' %}">
+                        <td> {{ item.date }} </td>
+                        <td> {{ item.amount }} </td>
+                        <td> {{ item.category }} </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 {% endblock %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from finance_manager.models import Category, Transaction
+from finance_manager.models import Category, Transaction, Budget
 
 
 # Register your models here.
@@ -13,4 +13,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'type', 'amount', 'date')
+    list_display = ('id', 'user', 'type', 'budget', 'amount', 'date')
+
+
+@admin.register(Budget)
+class BudgetAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'category', 'date', 'amount')

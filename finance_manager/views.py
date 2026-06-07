@@ -2,7 +2,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
-from .forms import CategoryForm, TransactionForm, BudgetForm
+from .forms import CategoryForm, TransactionForm, BudgetForm, DateWidgetEvent
 from .models import Budget
 
 
@@ -44,37 +44,68 @@ def finances(request):
     form_cat = CategoryForm()
     form_tr = TransactionForm()
     form_bg = BudgetForm()
+    form_sort = DateWidgetEvent()
     if request.method == 'POST':
-        form_cat = CategoryForm(request.POST)
-        form_tr = TransactionForm(request.POST)
-        form_bg = BudgetForm(request.POST)
-        form_cat.instance.user = request.user
-        form_tr.instance.user = request.user
-        form_bg.instance.user = request.user
-        if form_cat.is_valid():
-            form = form_cat.save(commit=False)
-            form.save()
-            return redirect('finances')
-        if form_tr.is_valid():
-            amount = int(request.POST.get('amount'))
-            if amount < 0:
-                request.POST._mutable = True
-                request.POST.update({'type':'expense'})
-                request.POST._mutable = False
+        button = request.POST.get('submit')
+        if button == 'btn_cat':
+            form_cat = CategoryForm(request.POST)
+            form_cat.instance.user = request.user
+            if form_cat.is_valid():
+                form = form_cat.save(commit=False)
+                form.save()
+                return redirect('finances')
+        if button == 'btn_tr':
+            form_tr = TransactionForm(request.POST)
+            form_tr.instance.user = request.user
+            if form_tr.is_valid():
+                amount = int(form_tr.instance.amount)
+                if amount < 0:
+                    request.POST._mutable = True
+                    request.POST.update({'type': 'Расход'})
+                    request.POST._mutable = False
 
-            else:
-                request.POST._mutable = True
-                request.POST.update({'type': 'income'})
-                request.POST._mutable = False
-            bg = Budget.objects.get(pk=request.POST.get('category'))
-            bg.amount += amount
-            bg.save()
-            form = form_tr.save(commit=False)
-            form.user = request.user
-            form.save()
-            return redirect('finances')
-        if form_bg.is_valid():
-            form = form_bg.save(commit=False)
-            form.save()
-            return redirect('finances')
-    return render(request, 'finances.html', {'form_cat': form_cat, 'form_tr': form_tr, 'form_bg': form_bg})
+                else:
+                    request.POST._mutable = True
+                    request.POST.update({'type': 'Доход'})
+                    request.POST._mutable = False
+                date = form_tr.instance.date
+                date = str(date)[:-2] + '01'
+                bg = Budget.objects.filter(category=request.POST.get('category'), date=date)
+                if bg.exists():
+                    bg = bg.first()
+                    bg.amount += amount
+                    bg.save()
+                    request.POST._mutable = True
+                    request.POST.update({'budget': bg})
+                    request.POST._mutable = False
+                    form_tr = TransactionForm(request.POST)
+                    form = form_tr.save(commit=False)
+                    form.user = request.user
+                    form.save()
+                return redirect('finances')
+        if button == 'btn_bg':
+            form_bg = BudgetForm(request.POST)
+            form_bg.instance.user = request.user
+            if form_bg.is_valid():
+                form = form_bg.save(commit=False)
+                form.save()
+                return redirect('finances')
+        if button == 'btn_sort':
+            form_sort = DateWidgetEvent(request.POST)
+            if form_sort.is_valid():
+                sort_date = form_sort.cleaned_data['date']
+                sort_date.strftime('%Y-%m-%d')
+                sort_date = str(sort_date)[:-2] + '01'
+                objects = Budget.objects.filter(date=sort_date)
+                return render(request, 'finances.html',
+                              {'form_cat': form_cat,
+                               'form_tr': form_tr,
+                               'form_bg': form_bg,
+                               'objects': objects,
+                               'form_sort': form_sort})
+    return render(request, 'finances.html',
+                  {'form_cat': form_cat,
+                   'form_tr': form_tr,
+                   'form_bg': form_bg,
+                   'form_sort': form_sort,
+                   })

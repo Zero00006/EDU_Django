@@ -1,6 +1,9 @@
+from tabnanny import verbose
+
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms.widgets import SelectDateWidget
+from django.forms.widgets import SelectDateWidget, HiddenInput
+import datetime
 
 from . import models
 
@@ -9,7 +12,7 @@ class MonthYearWidget(forms.SelectDateWidget):
         context = super().get_context(name, value, attrs)
         context['widget']['subwidgets'][0]['attrs']['style'] = 'display: none;'
         context['widget']['subwidgets'][0]['attrs']['type'] = 'hidden'
-        context['widget']['subwidgets'][0]['attrs']['value'] = '1'
+        context['widget']['subwidgets'][0]['attrs']['value'] = '01'
         return context
 
 class CategoryForm(forms.ModelForm):
@@ -29,8 +32,10 @@ class CategoryForm(forms.ModelForm):
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = models.Transaction
-        fields = ('amount', 'category', 'date', 'description')
+        fields = ('amount', 'category', 'date', 'description', 'type', 'budget')
         widgets = {
+            'type': HiddenInput(),
+            'budget': HiddenInput(),
             'date': SelectDateWidget,
         }
 
@@ -41,3 +46,8 @@ class BudgetForm(forms.ModelForm):
         widgets = {
             'date': MonthYearWidget(),
         }
+
+class DateWidgetEvent(forms.Form):
+    date = forms.DateField(widget=MonthYearWidget(),
+                           initial=datetime.date.today(),
+                           label="Сортировка по дате")
