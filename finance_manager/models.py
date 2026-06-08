@@ -29,6 +29,8 @@ class Budget(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, verbose_name='Категория',)
     amount = DecimalField('Бюджет', max_digits=10,
                                  decimal_places=2, default=0)
+    current = DecimalField(max_digits=10,
+                           decimal_places=2, default=0)
     date = DateField('Год/Месяц')
 
     class Meta:
@@ -41,8 +43,7 @@ class Budget(models.Model):
         category = self.category
         user = self.user
         date = self.date
-        if (Budget.objects.filter(category=category, user=user).exists()
-                and Budget.objects.filter(category=category, date=date).exists()):
+        if Budget.objects.filter(category=category, user=user, date=date).exists():
             raise ValidationError("Бюджет данной категории в этом месяце существует")
 
 
@@ -54,7 +55,7 @@ class Transaction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True,
                                  related_name='transactions',
                                  verbose_name= 'Категория')
-    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, related_name='transactions', null=True, blank=True)
+    budget = models.ForeignKey(Budget, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField('Сумма', max_digits=10,
                                  decimal_places=2, default=0)
     description = models.CharField('Комментарий', max_length=200,
