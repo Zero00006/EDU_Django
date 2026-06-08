@@ -59,7 +59,7 @@ class Budget(models.Model):
         verbose_name_plural = 'Бюджеты'
 
     def __str__(self):
-        return f"id:{self.id}, category:{self.category}"
+        return f"{self.date} {self.category}"
 
     def clean(self):
         user = self.user
