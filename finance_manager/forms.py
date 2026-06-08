@@ -41,8 +41,8 @@ class BudgetForm(forms.ModelForm):
 
     def __init__(self, *args, user=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['category'].queryset = (models.Category.
-                                            objects.filter(user=user))
+        self.fields['category'].queryset = (models.
+                                            Category.objects.filter(user=user))
 
     class Meta:
         model = models.Budget

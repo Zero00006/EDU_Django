@@ -94,11 +94,12 @@ def finances(request):
                          update(current=bg.current))
                     return redirect('finances')
         if button == 'btn_bg':
-            form_bg = BudgetForm(request.POST)
-            form_bg.instance.user = request.user
+            form_bg = BudgetForm(request.POST, user=request.user)
             form_bg.instance.current = form_bg.instance.amount
+            form_bg.instance.user = request.user
             if form_bg.is_valid():
                 form = form_bg.save(commit=False)
+                form.current = form.amount
                 form.save()
                 return redirect('finances')
         if button == 'btn_sort':

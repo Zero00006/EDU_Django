@@ -10,10 +10,15 @@ class Category(models.Model):
     name = models.CharField('Название категории',
                             max_length=50)
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     class Meta:
-        unique_together = ('user', 'name')
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'name'],
+                name='unique_category',
+            )
+        ]
         ordering = ['-name']
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
@@ -44,7 +49,12 @@ class Budget(models.Model):
     date = DateField('Год/Месяц')
 
     class Meta:
-        unique_together = (('user', 'category'), ('date', 'category'))
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'category', 'date'],
+                name='unique_budget_per_month',
+            )
+        ]
         verbose_name = 'Бюджет'
         verbose_name_plural = 'Бюджеты'
 
@@ -52,11 +62,12 @@ class Budget(models.Model):
         return f"id:{self.id}, category:{self.category}"
 
     def clean(self):
-        category = self.category
         user = self.user
+        category = self.category
         date = self.date
         if Budget.objects.filter(category=category,
-                                 user=user, date=date).exists():
+                                 date=date,
+                                 user=user).exists():
             raise ValidationError(
                 "Бюджет данной категории в этом месяце существует")
 
