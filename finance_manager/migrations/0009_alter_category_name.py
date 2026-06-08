@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('finance_manager', '0008_alter_transaction_unique_together_and_more'),
+        ('finance_manager',
+         '0008_alter_transaction_unique_together_and_more'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='category',
             name='name',
-            field=models.CharField(max_length=50, verbose_name='Название категории'),
+            field=models.CharField(max_length=50,
+                                   verbose_name='Название категории'),
         ),
     ]

@@ -21,21 +21,34 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='category',
             name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=django.db.models.
+                                    deletion.CASCADE,
+                                    to=settings.AUTH_USER_MODEL),
         ),
         migrations.CreateModel(
             name='Budget',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
-                ('amount', models.DecimalField(decimal_places=2, default=0, max_digits=10, verbose_name='Бюджет')),
-                ('date', models.DateField(default=django.utils.timezone.now, verbose_name='Год/Месяц')),
-                ('category', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='finance_manager.category', verbose_name='Категория')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('amount', models.DecimalField(decimal_places=2,
+                                               default=0,
+                                               max_digits=10,
+                                               verbose_name='Бюджет')),
+                ('date', models.DateField(default=django.utils.timezone.now,
+                                          verbose_name='Год/Месяц')),
+                ('category', models.ForeignKey(null=True,
+                                               on_delete=django.db.models.
+                                               deletion.SET_NULL,
+                                               to='finance_manager.category',
+                                               verbose_name='Категория')),
+                ('user', models.ForeignKey(on_delete=django.db.models.
+                                           deletion.CASCADE,
+                                           to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Бюджет',
                 'verbose_name_plural': 'Бюджеты',
-                'unique_together': {('date', 'category'), ('user', 'category')},
+                'unique_together': {('date', 'category'),
+                                    ('user', 'category')},
             },
         ),
     ]

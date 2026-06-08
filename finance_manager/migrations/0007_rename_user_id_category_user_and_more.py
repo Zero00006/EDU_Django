@@ -7,7 +7,8 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('finance_manager', '0006_alter_category_options_alter_transaction_options_and_more'),
+        ('finance_manager',
+         '0006_alter_category_options_alter_transaction_options_and_more'),
     ]
 
     operations = [
@@ -24,6 +25,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='transaction',
             name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='transactions', to='finance_manager.category', verbose_name='Категория'),
+            field=models.ForeignKey(null=True,
+                                    on_delete=django.db.models.deletion.SET_NULL,
+                                    related_name='transactions',
+                                    to='finance_manager.category',
+                                    verbose_name='Категория'),
         ),
     ]

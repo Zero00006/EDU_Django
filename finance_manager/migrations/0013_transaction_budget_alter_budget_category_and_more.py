@@ -14,12 +14,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='transaction',
             name='budget',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='transactions', to='finance_manager.budget'),
+            field=models.ForeignKey(null=True,
+                                    on_delete=django.db.models.
+                                    deletion.CASCADE,
+                                    related_name='transactions',
+                                    to='finance_manager.budget'),
         ),
         migrations.AlterField(
             model_name='budget',
             name='category',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='finance_manager.category', verbose_name='Категория'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.
+                                    deletion.CASCADE,
+                                    to='finance_manager.category',
+                                    verbose_name='Категория'),
         ),
         migrations.AlterField(
             model_name='budget',

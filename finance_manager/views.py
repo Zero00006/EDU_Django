@@ -4,7 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
-from .forms import CategoryForm, TransactionForm, BudgetForm, DateWidgetEvent, BudgetWidgetEvent
+from .forms import (CategoryForm, TransactionForm, BudgetForm,
+                    DateWidgetEvent, BudgetWidgetEvent)
 from .models import Budget, Transaction
 
 
@@ -41,6 +42,7 @@ def logout_view(request):
     else:
         return redirect('index')
 
+
 @login_required(login_url='login')
 def finances(request):
     form_cat = CategoryForm()
@@ -72,7 +74,8 @@ def finances(request):
                     request.POST._mutable = False
                 date = form_tr.instance.date
                 date = str(date)[:-2] + '01'
-                bg = Budget.objects.filter(category=request.POST.get('category'), date=date)
+                bg = Budget.objects.filter(category=request.POST.
+                                           get('category'), date=date)
                 if bg.exists():
                     bg = bg.first()
                     request.POST._mutable = True
@@ -83,10 +86,12 @@ def finances(request):
                         form_tr.instance.user = request.user
                         form_tr.save()
                         bg.current = bg.amount
-                        trs = Transaction.objects.filter(budget=request.POST['budget'])
+                        trs = Transaction.objects.filter(budget=request.
+                                                         POST['budget'])
                         for transaction in trs:
                             bg.current += transaction.amount
-                        Budget.objects.filter(pk=bg.id).update(current=bg.current)
+                        (Budget.objects.filter(pk=bg.id).
+                         update(current=bg.current))
                     return redirect('finances')
         if button == 'btn_bg':
             form_bg = BudgetForm(request.POST)
@@ -102,7 +107,8 @@ def finances(request):
                 sort_date = form_sort.cleaned_data['date']
                 sort_date.strftime('%Y-%m-%d')
                 sort_date = str(sort_date)[:-2] + '01'
-                objects = Budget.objects.filter(date=sort_date, user=request.user)
+                objects = Budget.objects.filter(date=sort_date,
+                                                user=request.user)
                 return render(request, 'finances.html',
                               {'form_cat': form_cat,
                                'form_tr': form_tr,
@@ -115,6 +121,8 @@ def finances(request):
                    'form_bg': form_bg,
                    'form_sort': form_sort,
                    })
+
+
 @login_required(login_url='login')
 def transactions(request):
     form_sort_tr = BudgetWidgetEvent(user=request.user)
@@ -126,16 +134,20 @@ def transactions(request):
                 print(form_sort_tr.cleaned_data)
                 sort_date = form_sort_tr.data['budget']
                 transac = Transaction.objects.filter(budget=sort_date)
-                return render(request,
-                        'transactions.html', {"form_sort_tr":form_sort_tr,"transac": transac})
-    return render(request,
-            'transactions.html', {'form_sort_tr': form_sort_tr})
+                return render(request, 'transactions.html',
+                              {"form_sort_tr": form_sort_tr,
+                               "transac": transac})
+    return render(request, 'transactions.html', {'form_sort_tr': form_sort_tr})
+
+
 @require_http_methods(['POST'])
 @login_required(login_url='login')
 def delete_budget(request, pk):
     item = get_object_or_404(Budget, pk=pk)
     item.delete()
     return redirect('finances')
+
+
 @require_http_methods(['POST'])
 @login_required(login_url='login')
 def delete_transaction(request, pk):
